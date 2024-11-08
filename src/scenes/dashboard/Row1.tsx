@@ -1,10 +1,10 @@
-import React from 'react'
+
 import DashboardBox from '@/components/DashboardBox'
 import { useGetKpisQuery } from '@/state/api'
 import {ResponsiveContainer, AreaChart,
     CartesianGrid, XAxis, YAxis,
     Tooltip, Area, Line, LineChart
-    , Legend} from "recharts";
+    , Legend, BarChart, Bar} from "recharts";
 import { useMemo } from 'react';
 import { useTheme } from '@emotion/react';
 import BoxHeader from '@/components/BoxHeader';
@@ -40,6 +40,18 @@ const revenueProfit = useMemo(()=> {
       }
     ));
   }, [data]);
+const revenue = useMemo(()=> {
+
+    return (
+        data && data[0].monthlyData.map(({month, revenue}) => {
+                return {
+                    name: month.substring(0, 3),
+                    revenue: revenue,
+
+                }
+            }
+        ));
+}, [data]);
 
 
   return (
@@ -145,7 +157,33 @@ const revenueProfit = useMemo(()=> {
         </LineChart>
       </ResponsiveContainer>
         </DashboardBox>
-        <DashboardBox  gridArea="c"></DashboardBox>
+        <DashboardBox  gridArea="c">
+            <BoxHeader
+                title='Revenue Month by Month'
+                subtitle='Top line represents revenue bottom line represnets month interval'
+                sideText='+4%'/>
+            <ResponsiveContainer width="100%" height="100%">
+                <BarChart
+                    width={500}
+                    height={300}
+                    data={revenue}
+                    margin={{
+                        top: 17,
+                        right: 15,
+                        left: -5,
+                        bottom: 58,
+                    }}
+                >
+                    <CartesianGrid vertical={false} stroke={palette.grey[800]}/>
+                    <XAxis dataKey="name" axisLine={false} tickLine={false} style={{fontSize: '10px'}}/>
+                    <YAxis />
+                    <Tooltip />
+                    <Legend />
+                    <Bar dataKey="revenue" fill="url(#colorRevenue)" />
+
+                </BarChart>
+            </ResponsiveContainer>
+        </DashboardBox>
     </>
   )
 }
