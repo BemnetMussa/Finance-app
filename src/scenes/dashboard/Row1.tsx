@@ -11,6 +11,7 @@ import BoxHeader from '@/components/BoxHeader';
 
 const Row1 = () => {
   const {data} = useGetKpisQuery();
+  console.log("🚀 ~ Row1 ~ data:", data)
 
   const { palette } = useTheme();
 
@@ -52,7 +53,6 @@ const revenue = useMemo(()=> {
             }
         ));
 }, [data]);
-
 
   return (
     <>
@@ -172,8 +172,15 @@ const revenue = useMemo(()=> {
                         right: 15,
                         left: -5,
                         bottom: 58,
-                    }}
-                >
+                    }}>
+
+                    <defs>
+                      <linearGradient id='colorRevenue' x1='0' y1='0' x2='0' y2='1'>
+                        <stop offset='5%' stopColor={palette.primary[300]} stopOpacity={0.5} />
+                        <stop offset='95%' stopColor={palette.primary[300]} stopOpacity={0} />
+                      </linearGradient>
+                    </defs>
+                    
                     <CartesianGrid vertical={false} stroke={palette.grey[800]}/>
                     <XAxis dataKey="name" axisLine={false} tickLine={false} style={{fontSize: '10px'}}/>
                     <YAxis />
